@@ -8,6 +8,7 @@ var express = require('express'),
 const app = express(),
       PORT = 8080,
       db = require('./models');
+      // routes = require("./routes");
 
 //express set-up
 app.use(logger('dev'));

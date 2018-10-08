@@ -6,18 +6,29 @@ var Schema = mongoose.Schema;
 
 //Make a UserSchema object using the constructor
 var VideoSchema = new Schema({
+  //Title of the video
   title: {
     type: String,
     required: true
   },
+  //Link to the video
   link: {
     type: String,
     required: true
   },
-  //This is what associates a note to a particular user
-  note: {
-    type: Schema.Types.ObjectId,
-    ref: "Note"
+  // img: {
+    // type: String,
+    // required: true
+  // },
+  //Date that this was gotten
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  //Save this if the user requests it
+  saved: {
+    type: Boolean,
+    default: false,
   }
 });
 
