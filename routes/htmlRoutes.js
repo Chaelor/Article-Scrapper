@@ -4,7 +4,7 @@ module.exports = (app) => {
   app.get("/", (req, res) => {
     res.render("index", {
       css:["reset.css"],
-      js:["text.js"]
+      js:["dataHandle.js"]
     });
   });
 

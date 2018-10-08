@@ -9,7 +9,8 @@ var VideoSchema = new Schema({
   //Title of the video
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   //Link to the video
   link: {
@@ -17,8 +18,8 @@ var VideoSchema = new Schema({
     required: true
   },
   // img: {
-    // type: String,
-    // required: true
+  //   type: String,
+  //   required: true
   // },
   //Date that this was gotten
   date: {

@@ -1,5 +1,11 @@
 Hello
 
-<a href="#" onclick="scrape(); return false">Click here for api</a>
+<button class="video-fetch">Fetch Videos!</button>
 
-<div id="scrappedData"></div>
+<div class="container video-data" id="video-data">
+  {{#each Video}}
+  <div data-_id="{{this._id}}" class="card">
+    <a href="{{this.link}}">{{this.title}}</a>
+  </div>
+  {{/each}}
+</div>
