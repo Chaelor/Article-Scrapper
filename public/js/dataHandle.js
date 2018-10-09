@@ -1,70 +1,74 @@
-// fetch("/api/videos", {
-//   method: "GET",
-//   headers: {
-//     "Content-Type": "application/json; charset=utf-8"
-//   }
-// }).then((dbRes) => {
-//   var data = dbRes.json();
-//   console.log(data);
-//   return data;
-// }).catch((err) => {
-//   console.log(err);
-// });
 
-$("document").ready(() => {
+//Event handlers
+document.getElementById("video-fetch").addEventListener('click', scrape);
 
-  function getVideos() {
-    $.getJSON("/api/videos", (data) => {
-      // data.forEach(element => {
-      //   console.log(element);
-      // });
-      console.log("2");
-      prepCard(data);
+//Initial fetch
+function fetchVideos() {
+  console.log("2");
+  fetch('/api/videos')
+    .then(dbRes => {
+      if (dbRes.ok) {
+        return dbRes.json();
+      } else {
+        throw new Error('Something went wrong');
+      }
+    })
+    .then(videoData => {
+      //For each element in videoData, make a card
+      videoData.forEach(ele => {
+        makeCard(ele);
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
-  }
+}
 
-  //This function will render data for what is on the page
+//function makes cards from data passed in via fetchVideos
+function makeCard(video) {
+  console.log("3");
 
-  function prepCard(video) {
-    console.log("3");
-    let videoData = $(".video-data");
-    let videoCard = [];
+  //Selecting // Creating dom elements
+  let card = document.createElement("div");
+  let videoData = document.querySelector(".video-data");
 
-    video.forEach(ele => {
-      videoCard.push(makeCard(ele));
-    });
+  //Add class "card" to the created card div
+  card.classList.add('card');
 
-    videoData.append(videoCard);
-  }
+  //This is what we will set the innerHTML of on the card.
+  let cardData = `
+  <div class='card-data'>
+  <a class='video-link' target='_blank' href="${video.link}">
+  ${video.title}
+  </a>
+</div>
+`;
 
-  function makeCard(video) {
-    console.log("4");
-    let card = $("<div class='card'>");
-    let cardData = $("<div class='card-data'>").append(
-      $(`<a class='video-link' target='_blank' href=${video.link}>`).append(
-        $(`<div>`).text(video.title)
-      )
-    );
+  //Set innerHTML of the card equal to the card data and the data-_id to the id of the entry in the data base
+  card.innerHTML = cardData;
+  card.dataset._id = video._id;
 
-    card.append(cardData);
-    card.data("_id", video._id);
+  //Append the card to the div
+  videoData.appendChild(card);
+}
 
-    return card;
-  }
-
-  //This function will scape the api
-  function scrape() {
-    //Fetch url below, which will automatically scrape youtube for titles and hrefs
-    fetch("/api/scrape", {
-      method: "GET"
-    }).then((res) => {
-      console.log("1");
-      //Render data
-      getVideos();
-    });
-  }
-
-  $(".video-fetch").on("click", (e) => {
-    scrape();
+//This function will scape the api
+function scrape() {
+  //Fetch url below, which will automatically scrape youtube for titles and hrefs
+  fetch("/api/scrape", {
+    method: "GET"
+  }).then((dbRes) => {
+    if (dbRes.ok) {
+      return dbRes.json();
+    } else {
+      throw new Error('Something went wrong');
+    }
+  }).then((res) => {
+    console.log("1");
+    if (res) {
+      fetchVideos();
+    }
+  }).catch(err => {
+    console.log(err);
   });
-});
+}

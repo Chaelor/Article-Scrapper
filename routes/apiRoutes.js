@@ -12,7 +12,7 @@ module.exports = (app) => {
   });
 
   app.get("/api/videos", (req, res) => {
-    db.Video.find({}).sort({ title: 1 })
+    db.Video.find({ saved : false }).sort({ title: 1 })
       .then((dbVideo) => {
         res.json(dbVideo);
       })
