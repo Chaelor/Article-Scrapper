@@ -24,9 +24,6 @@ const scrape = (req, res) => {
 
       let sum = $(this)
         .find("p").text().trim();
-      // let img = $(this)
-      //   .children("img")
-      //   .attr("src");
 
       //If title, link, and whatever else I need to add exists, do this: 
       if (title && link) {
