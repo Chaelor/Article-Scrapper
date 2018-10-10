@@ -7,9 +7,9 @@ var Schema = mongoose.Schema;
 var NoteSchema = new Schema({
   //Title and Body for the note, both are strings
   articleID: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: "Article",
-    required: true
+    // required: true
   },
   date: {
     type: Date,
@@ -17,7 +17,7 @@ var NoteSchema = new Schema({
   },
   body: {
     type:String,
-    required: true
+    // required: true
   }
 });
 

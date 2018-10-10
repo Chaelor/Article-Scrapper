@@ -33,6 +33,7 @@ function scrape() {
   fetch("/api/scrape", {
     method: "GET"
   }).then((dbRes) => {
+    console.log('1');
     //If the response from db is okay, respond with json
     if (dbRes.ok) {
       return dbRes.json();

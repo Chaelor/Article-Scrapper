@@ -146,7 +146,7 @@ function handleNoteModal(data) {
       body: modalText.value
     }
 
-    console.log(JSON.stringify(postData));
+    console.log("Saved.js: " + JSON.stringify(postData));
     modalText.value = "";
 
     if (postData.body === "") {
@@ -155,13 +155,14 @@ function handleNoteModal(data) {
 
     fetch(`/api/notes`, {
       method: 'POST',
-      // headers: {
-      //   "Content-type": "application/json"
-      // },
+      headers: {
+        "Content-type": "application/json",
+        "Accept": 'application/json'
+      },
       data: JSON.stringify(postData)
     })
       .then((res) => {
-        console.log(res);
+        console.log("/api/notes returned: " + JSON.stringify(res));
       })
       .catch(err => err);
   })
