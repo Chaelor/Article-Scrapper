@@ -11,7 +11,7 @@ var ArticleSchema = new Schema({
     type: String,
     required: true,
     index: true,
-    unique: true  
+    unique: true
   },
   //Link to the video
   link: {
