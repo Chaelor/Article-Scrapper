@@ -3,7 +3,6 @@ const db = require("../models");
 
 //from other files
 const fetchArticle = require("../controllers/fetch");
-const fetchDB = require("../controllers/article");
 
 module.exports = (app) => {
 
@@ -12,7 +11,7 @@ module.exports = (app) => {
   });
 
   app.get("/api/articles", (req, res) => {
-    db.Article.find({ saved: false }).sort({ title: 1 })
+    db.Article.find().sort({ title: 1 })
       .then((dbVideo) => {
         res.json(dbVideo);
       })
@@ -41,13 +40,27 @@ module.exports = (app) => {
       .catch(err => err);
   });
 
-  // app.get("/api/data", (req,res) => {
-  //   db.Video.find({})
-  //   .then((dbVideo) => {
-  //     res.json(dbVideo);
-  //   })
-  //   .catch((err) => {
-  //     res.json(err);
-  //   })
-  // });
+  app.post("/api/notes", (req, res) => {
+    db.Note.create(req.body).then(dbNote => res.json(dbNote));
+  });
+
+  app.get("/api/notes/:id", (req, res) => {
+    db.Note.find({ articleID: req.params.id }).then(dbNote => res.json(dbNote));
+  });
+
+  app.get("/api/notes/", (req, res) => {
+    db.Note.find().sort({ title: 1 })
+      .then((dbVideo) => {
+        res.json(dbVideo);
+      })
+      .catch((err) => {
+        res.json(err);
+      })
+  });
+
+  app.delete("/api/notes/:id", (req, res) => {
+    db.Note.find({ _id: req.params.id }).remove()
+      .then(data => res.json(data))
+      .catch(err => err);
+  });
 }

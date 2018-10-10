@@ -26,6 +26,10 @@ var ArticleSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  date: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 //This creates our collection(model in sql) "Article"

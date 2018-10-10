@@ -10,6 +10,7 @@ a{
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-attachment: fixed;
+  background-position: top;
 }
 
  /* The Modal (background) */
@@ -56,4 +57,12 @@ a{
 
 .card-link{
   padding-top: 10px;
+}
+.card-content{
+  padding-bottom: 0 !important;
+}
+
+#note-creator{
+  background-color: white;
+  resize: none;
 }

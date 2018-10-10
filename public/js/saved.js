@@ -1,9 +1,6 @@
-
-//global variables
 var articleArea = document.getElementById("article-data");
 
-//Event handlers
-document.getElementById("article-fetch").addEventListener('click', scrape);
+fetchArticles();
 
 //Modal handling
 function handleModal(data) {
@@ -18,44 +15,22 @@ function handleModal(data) {
   });
 
   modal.addEventListener('click', () => {
-    modal.style.display = "none";    
+    modal.style.display = "none";
   })
 
   //Make it so that it displays if entry was deleted/saved from db and display the modal
   modalTitle.textContent = data.action;
-  modalText.innerHTML = `${data.title} was ${data.action.toLowerCase()} <a href="/saved">Click here</a> to see saved articles!`;
+  modalText.innerHTML = `${data.title} was ${data.action.toLowerCase()}`;
   modal.style.display = "block";
-}
-
-//This function will scape the api
-function scrape() {
-  //Fetch url below, which will automatically scrape youtube for titles and hrefs
-  fetch("/api/scrape", {
-    method: "GET"
-  }).then((dbRes) => {
-    //If the response from db is okay, respond with json
-    if (dbRes.ok) {
-      return dbRes.json();
-    } else {
-      throw new Error('Something went wrong');
-    }
-  }).then((res) => {
-    //fetch articles
-    if (res) {
-      fetchArticles();
-    }
-  }).catch(err => {
-    console.log(err);
-  });
 }
 
 //Initial fetch
 function fetchArticles() {
-  fetch('/api/articles')
+  fetch('/api/articles', {
+  })
     .then(dbRes => {
 
       //Empty the div where cards go.
-      articleArea.innerHTML = "";
 
       if (dbRes.ok) {
         return dbRes.json();
@@ -64,38 +39,42 @@ function fetchArticles() {
       }
     })
     .then(articleData => {
-
+      // if (articleData.saved) {
       //We will use this for appending cards to the dom
       let articleArr = [];
 
       //For each element in articleData, make a card
       articleData.forEach(ele => {
         //For every article in articleData make a card
-        if (!ele.saved) {
+        if (ele.saved) {
           articleArr.push(makeCard(ele))
         }
       });
+
+      if (articleArr.length !== 0) {
+        articleArea.innerHTML = "";
+      }
 
       //Append every element from articleArr to the dom
       articleArr.forEach(ele => articleArea.appendChild(ele));
 
       //collect all the save and delete buttons
       let deleteThis = document.querySelectorAll(".btn-delete");
-      let save = document.querySelectorAll(".btn-save");
+      let noteThis = document.querySelectorAll(".btn-note");
 
       //Whoever is grading this, don't look at this loop please
       //Give the buttons event handlers
-      for (let i = 0; i < save.length; i++) {
-        save[i].addEventListener('click', saveArticle);
+      for (let i = 0; i < articleArr.length; i++) {
         deleteThis[i].addEventListener('click', deleteArticle);
+        noteThis[i].addEventListener('click', getNotes);
       }
     })
     .catch(err => {
       console.log(err);
     });
+
 }
 
-//function makes cards from data passed in via fetcharticles
 function makeCard(article) {
 
   //Selecting // Creating dom elements
@@ -118,8 +97,8 @@ function makeCard(article) {
   </p>
     </div>
     <div class="card-action">
-    <a class="waves-effect waves-light btn btn-save purple lighten-1" data-_id=${article._id}><i class="fas fa-save"></i> Save</a>
-    <a class="waves-effect waves-light btn btn-delete purple lighten-1" data-_id=${article._id}><i class="fas fa-backspace"></i> Delete</a>
+    <a class="waves-effect waves-light btn btn-note purple lighten-1" data-_id=${article._id}><i class="fas fa-sticky-note"></i> Leave A Note</a>
+    <a class="waves-effect waves-light btn btn-delete purple lighten-1" data-_id=${article._id}><i class="fas fa-backspace"></i> Delete Article</a>
     </div>
   </div>
 </div>
@@ -132,41 +111,38 @@ function makeCard(article) {
   return card;
 }
 
-function saveArticle() {
-
-  //Get the id from the button data
+function getNotes() {
   let articleID = this.getAttribute('data-_id');
-  //We'll be removing this from the DOM
-  let removeCard = this.parentNode.parentNode;
-  //Get the parent parent element, then get the first child in both instances, this will get us the title of the article
-  //TODO: Fix this shit you dummy
   let joshWhatHaveYouDone = this.parentNode.parentNode.children[0].children[0].textContent;
 
-  //Create an object with the requred info
-  let dataHandler = {
-    action: "Saved!",
+  let data = {
+    id: articleID,
     title: joshWhatHaveYouDone
-  };
+  }
 
-  //Call the modal, pass it the object from above
-  handleModal(dataHandler);
+  handleNoteModal(data);
+};
 
-  //Remove the card from display area
-  removeCard.remove();
+function handleNoteModal(data) {
+  console.log(data);
+  let modal = document.getElementById('myModal');
+  let modalTitle = document.getElementById('modal-title');
+  let modalText = document.getElementById('modal-text');
 
-  //Update the card in the database to saved:true
-  fetch(`/api/articles/${articleID}`, {
-    method: "PUT",
-    // data: updateThis
-  }).then((res) => {
-    console.log(res);
-    if (res.saved) {
-      fetchArticles();
-    }
-  })
+  //On the close button, add an event listener to display none
+  document.getElementById('close').addEventListener('click', () => {
+    modal.style.display = "none";
+  });
+
+  fetch(`/api/notes/${data.id}`)
+  .then((res) => {
+
+  });
+  modalTitle.textContent = data.title;
+
+  modal.style.display = "block";
 }
 
-//This will delete the article associated with the ID from the button
 function deleteArticle() {
 
   /***************************************

@@ -6,12 +6,13 @@ var Schema = mongoose.Schema;
 //Make a NoteSchema (mongodb collection) using the constructor
 var NoteSchema = new Schema({
   //Title and Body for the note, both are strings
-  videoID: {
+  articleID: {
     type: Schema.Types.ObjectId,
     ref: "Article"
   },
-  title: {
-    type: String
+  date: {
+    type: Date,
+    default: Date.now
   },
   body: {
     type:String
