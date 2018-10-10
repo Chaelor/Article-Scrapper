@@ -5,36 +5,31 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 //Make a UserSchema object using the constructor
-var VideoSchema = new Schema({
+var ArticleSchema = new Schema({
   //Title of the video
   title: {
     type: String,
     required: true,
+    index: true,
     unique: true
   },
   //Link to the video
   link: {
     type: String,
-    required: true
+    required: true,
   },
-  // img: {
-  //   type: String,
-  //   required: true
-  // },
-  //Date that this was gotten
-  date: {
-    type: Date,
-    default: Date.now
+  sum: {
+    type: String,
   },
   //Save this if the user requests it
   saved: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
-//This creates our collection(model in sql) "User"
-var Video = mongoose.model("Video", VideoSchema);
+//This creates our collection(model in sql) "Article"
+var Article = mongoose.model("Article", ArticleSchema);
 
 //Export collection
-module.exports = Video;
+module.exports = Article;

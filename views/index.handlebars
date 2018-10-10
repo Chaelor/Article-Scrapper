@@ -1,10 +1,14 @@
-
-<button id="video-fetch">Fetch Videos!</button>
-
-<div class="container video-data" id="video-data">
-  {{#each Video}}
-  <div data-_id="{{this._id}}" class="card">
-    <a href="{{this.link}}">{{this.title}}</a>
+<nav>
+  <div class="nav-wrapper blue">
+    <a href="#" class="brand-logo center">Reuters Scrapper</a>
+    <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <a class="waves-effect waves-light btn purple lighten-1" id="article-fetch"><i class="fas fa-arrow-alt-circle-right material-icons left"></i>Scrape Reuters</a>
+    </ul>
   </div>
-  {{/each}}
+</nav>
+
+<div class="jumbotron"></div>
+
+<div class="container article-data" id="article-data">
+
 </div>

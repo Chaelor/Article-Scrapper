@@ -4,14 +4,14 @@ const scrape = require("./scrapper");
 
 //export these videos and urls
 module.exports = {
-  scrapeVideos: (req, res) => {
+  scrapeArticles: (req, res) => {
     return scrape()
-      .then((video) => {
-        return db.Video.create(video);
+      .then((article) => {
+        return db.Article.create(article);
       })
-      .then((dbVideo) => {
+      .then((dbArticle) => {
         //TODO: WHEN WORKING REMOVE THIS
-        console.log(dbVideo);
+        console.log(dbArticle);
       })
       .catch((err) => {
         console.log(err);

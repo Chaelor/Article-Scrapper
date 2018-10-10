@@ -5,25 +5,25 @@ const cheerio = require("cheerio");
 //scrape function
 const scrape = (req, res) => {
   // Get the body using axios
-  return axios.get("https://www.youtube.com/").then(function (response) {
+  return axios.get("https://www.reuters.com/").then(function (response) {
     // Load cheerio, assign it the $ symbol
     var $ = cheerio.load(response.data);
 
     //Save gotten data to this array.
-    let videos = [];
+    let articles = [];
 
     // Grab every h3 within a div -- TODO: Better specify this
-    $("div h3").each(function (i, element) {
+    $("article.story").each(function (i, element) {
 
       // Get the title, link, and other things within the div
       let title = $(this)
-        .children("a")
-        .text();
+        .find("h3").text().trim();
 
-      let link = "https://www.youtube.com" + $(this)
-        .children("a")
-        .attr("href");
+      let link = "https://www.reuters.com/" + $(this)
+        .find("a").attr("href");
 
+      let sum = $(this)
+        .find("p").text().trim();
       // let img = $(this)
       //   .children("img")
       //   .attr("src");
@@ -34,16 +34,17 @@ const scrape = (req, res) => {
         //Declare an object save the title and link to the 
         let scrappedData = {
           title: title,
-          link: link
+          link: link,
+          sum: sum
         }
 
-        //Push the scrapped data into the videos array
-        videos.push(scrappedData);
+        //Push the scrapped data into the articles array
+        articles.push(scrappedData);
       };
     });
 
-    //After the above forEach is done, return the videos array.
-    return videos;
+    //After the above forEach is done, return the articles array.
+    return articles;
   });
 }
 

@@ -25,7 +25,7 @@ require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 //connect to DB
-mongoose.connect("mongodb://localhost/ytScrapper", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost/rtScrape", {useNewUrlParser: true});
 
 app.listen(PORT, () => {
   console.log(`App running on port: ${PORT}`);

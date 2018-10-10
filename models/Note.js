@@ -8,7 +8,7 @@ var NoteSchema = new Schema({
   //Title and Body for the note, both are strings
   videoID: {
     type: Schema.Types.ObjectId,
-    ref: "Video"
+    ref: "Article"
   },
   title: {
     type: String
