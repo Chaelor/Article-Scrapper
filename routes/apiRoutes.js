@@ -21,7 +21,6 @@ module.exports = (app) => {
   });
 
   app.get("/api/articles/:id", (req, res) => {
-    // console.log("HERE DUMMY: " + req.body);
     db.Article.findOne({ _id: req.params.id })
       .then(data => res.json(data))
       .catch(err => err);
@@ -34,13 +33,13 @@ module.exports = (app) => {
   });
 
   app.delete("/api/articles/:id", (req, res) => {
-    // console.log("HERE DUMMY: " + req.body);
     db.Article.find({ _id: req.params.id }).remove()
       .then(data => res.json(data))
       .catch(err => err);
   });
 
   app.post("/api/notes", function(req, res) {
+    console.log(req.body);
     db.Note.create(req.body).then(dbNote => res.json(dbNote));
   });
 

@@ -8,14 +8,16 @@ var NoteSchema = new Schema({
   //Title and Body for the note, both are strings
   articleID: {
     type: Schema.Types.ObjectId,
-    ref: "Article"
+    ref: "Article",
+    required: true
   },
   date: {
     type: Date,
     default: Date.now
   },
   body: {
-    type:String
+    type:String,
+    required: true
   }
 });
 

@@ -2,8 +2,8 @@
 var express = require('express'),
     logger = require('morgan'),
     mongoose = require('mongoose'),
-    exhbs = require('express-handlebars'),
-    bodyParser = require('body-parser');
+    exhbs = require('express-handlebars');
+    // bodyParser = require('body-parser');
     
 //Constants
 const app = express(),
@@ -14,9 +14,11 @@ const app = express(),
 //express set-up
 app.use(logger('dev'));
 app.use(express.urlencoded({extended: true}));
-// app.use(express.json());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.static('public'));
+
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
 //express handlebars
 app.engine("handlebars", exhbs({ defaultLayout: "main"}));
