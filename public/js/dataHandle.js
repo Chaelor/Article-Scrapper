@@ -5,9 +5,25 @@ var articleArea = document.getElementById("article-data");
 //Event handlers
 document.getElementById("article-fetch").addEventListener('click', scrape);
 
-function test() {
-  console.log("Hello");
+function handleModal(data) {
+  console.log(data.action);
+  let modal = document.getElementById('myModal');
+  let modalTitle = document.getElementById('modal-title');
+  let modalText = document.getElementById('modal-text');
+
+  document.getElementById('close').addEventListener('click', () => {
+    modal.style.display = "none";
+  });
+
+  modal.addEventListener('click', () => {
+    modal.style.display = "none";
+  });
+
+  modalTitle.textContent = data.action;
+  modalText.textContent = data.title;
+  modal.style.display = "block";
 }
+
 
 //This function will scape the api
 function scrape() {
@@ -31,7 +47,6 @@ function scrape() {
 
 //Initial fetch
 function fetchArticles() {
-  console.log("2");
   fetch('/api/articles')
     .then(dbRes => {
 
@@ -85,6 +100,9 @@ function makeCard(article) {
       <p>
   ${article.sum ? article.sum : "Sorry, there wasn't a summary available. :("}
   </p>
+  <p class="card-link">
+  Interested in reading this article? <a href="${article.link}" target="_blank">Click Here</a>
+  </p>
     </div>
     <div class="card-action">
     <a class="waves-effect waves-light btn btn-save purple lighten-1" data-_id=${article._id}><i class="fas fa-save"></i> Save</a>
@@ -104,11 +122,22 @@ function makeCard(article) {
 
 function saveArticle() {
 
-  var articleID = this.getAttribute('data-_id');
+  let articleID = this.getAttribute('data-_id');
+  let removeCard = this.parentNode.parentNode;
+  let joshWhatHaveYouDone = this.parentNode.parentNode.children[0].children[0].textContent;
+
+  let dataHandler = {
+    action: "Saved!",
+    title: joshWhatHaveYouDone
+  };
+
+  handleModal(dataHandler);
+
+  removeCard.remove();
 
   fetch(`/api/articles/${articleID}`, {
     method: "PUT",
-    data: { saved: true }
+    // data: updateThis
   }).then((res) => {
     console.log(res);
     if (res.saved) {
@@ -121,7 +150,18 @@ function saveArticle() {
 function deleteArticle() {
 
   //get the id from the button element
-  var articleID = this.getAttribute('data-_id');
+  let articleID = this.getAttribute('data-_id');
+  let removeCard = this.parentNode.parentNode;
+  let joshWhatHaveYouDone = this.parentNode.parentNode.children[0].children[0].textContent;
+
+  let dataHandler = {
+    action: "Deleted!",
+    title: joshWhatHaveYouDone
+  };
+
+  handleModal(dataHandler);
+
+  removeCard.remove();
 
   //Delete this fam
   fetch(`/api/articles/${articleID}`, {

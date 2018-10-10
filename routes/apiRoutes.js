@@ -29,7 +29,7 @@ module.exports = (app) => {
   });
 
   app.put("/api/articles/:id", (req, res) => {
-    db.Article.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body }, { new: true })
+    db.Article.update({ _id: req.params.id }, { $set: { saved: true } }, { new: true })
       .then(data => res.json(data))
       .catch(err => err);
   });
