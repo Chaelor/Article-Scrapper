@@ -127,18 +127,40 @@ function handleNoteModal(data) {
   console.log(data);
   let modal = document.getElementById('myModal');
   let modalTitle = document.getElementById('modal-title');
-  let modalText = document.getElementById('modal-text');
+  let modalNotes = document.getElementById('modal-notes');
+  let modalBtns = document.getElementById('modal-btns');
+  
+  modalTitle.textContent = data.title;
+  modalBtns.innerHTML = `<a class="waves-effect waves-light btn btn-save purple lighten-1" id="btn-save" data-_id=${data.id}><i class="fas fa-save"></i> Leave a Note</a>`
+  
 
   //On the close button, add an event listener to display none
   document.getElementById('close').addEventListener('click', () => {
     modal.style.display = "none";
   });
+  
+  document.getElementById('btn-save').addEventListener('click', () => {
+    let modalText = document.getElementById('modal-text');
+    var postData = {
+      articleID: data.id,
+      body: modalText.value
+    }
 
-  fetch(`/api/notes/${data.id}`)
-  .then((res) => {
+    console.log(JSON.stringify(postData));
+    modalText.value = "";
 
-  });
-  modalTitle.textContent = data.title;
+    fetch(`/api/notes`,{
+      method: 'POST',
+      headers: {
+          "Content-Type" : "application/json; charset=utf-8"
+      },
+      data: JSON.stringify(postData)
+    })
+      .then((res) => {
+        
+      });
+  })
+
 
   modal.style.display = "block";
 }

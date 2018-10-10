@@ -40,7 +40,7 @@ module.exports = (app) => {
       .catch(err => err);
   });
 
-  app.post("/api/notes", (req, res) => {
+  app.post("/api/notes", function(req, res) {
     db.Note.create(req.body).then(dbNote => res.json(dbNote));
   });
 
