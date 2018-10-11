@@ -1,3 +1,4 @@
+/*eslint-disable*/
 var articleArea = document.getElementById("article-data");
 
 fetchArticles();
@@ -159,7 +160,7 @@ function handleNoteModal(data) {
         "Content-type": "application/json",
         "Accept": 'application/json'
       },
-      data: JSON.stringify(postData)
+      body: JSON.stringify(postData)
     })
       .then((res) => {
         console.log("/api/notes returned: " + JSON.stringify(res));

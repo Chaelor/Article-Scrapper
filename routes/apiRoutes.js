@@ -1,4 +1,6 @@
+/*eslint-disable*/
 //npm packages
+
 const db = require("../models");
 
 //from other files
@@ -38,8 +40,7 @@ module.exports = (app) => {
       .catch(err => err);
   });
 
-  app.post("/api/notes", function(req, res) {
-    console.log(req.body);
+  app.post("/api/notes", function (req, res) {
     db.Note.create(req.body).then(dbNote => res.json(dbNote));
   });
 

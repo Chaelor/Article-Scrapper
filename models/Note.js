@@ -9,7 +9,7 @@ var NoteSchema = new Schema({
   articleID: {
     type: String,
     ref: "Article",
-    // required: true
+    required: true
   },
   date: {
     type: Date,
@@ -17,7 +17,7 @@ var NoteSchema = new Schema({
   },
   body: {
     type:String,
-    // required: true
+    required: true
   }
 });
 

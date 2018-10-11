@@ -1,3 +1,4 @@
+/* eslint-disable */
 //npm packages
 var express = require('express'),
     logger = require('morgan'),
