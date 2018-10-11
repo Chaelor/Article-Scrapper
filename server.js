@@ -8,7 +8,7 @@ var express = require('express'),
     
 //Constants
 const app = express(),
-      PORT = 8080,
+      PORT = process.env.PORT || 8080,
       db = require('./models');
 
 //express set-up
@@ -29,7 +29,7 @@ require("./routes/htmlRoutes")(app);
 
 //connect to DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/rtArticles";
-
+// 
 // mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 mongoose.connect(MONGODB_URI);
 
