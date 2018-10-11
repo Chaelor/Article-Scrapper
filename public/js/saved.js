@@ -8,6 +8,7 @@ function handleModal(data) {
   //Get the modal elements
   let modal = document.getElementById('myModal');
   let modalTitle = document.getElementById('modal-title');
+  let modalBody = document.getElementById('modal-body');
   let modalText = document.getElementById('modal-text');
 
   //On the close button, add an event listener to display none
@@ -21,7 +22,8 @@ function handleModal(data) {
 
   //Make it so that it displays if entry was deleted/saved from db and display the modal
   modalTitle.textContent = data.action;
-  modalText.innerHTML = `${data.title} was ${data.action.toLowerCase()}`;
+  modalBody.innerHTML = `${data.title} was ${data.action.toLowerCase()}`;
+  modalText.style.display = "none";
   modal.style.display = "block";
 }
 
@@ -112,9 +114,11 @@ function makeCard(article) {
   return card;
 }
 
-function getNotes() {
+function getNotes(article) {
+
   let articleID = this.getAttribute('data-_id');
-  let joshWhatHaveYouDone = this.parentNode.parentNode.children[0].children[0].textContent;
+  let joshWhatHaveYouDone = this.parentNode.parentNode.children[0].children[0].textContent || article;
+
 
   let data = {
     id: articleID,
@@ -125,15 +129,51 @@ function getNotes() {
 };
 
 function handleNoteModal(data) {
-  console.log(data);
   let modal = document.getElementById('myModal');
   let modalTitle = document.getElementById('modal-title');
   let modalNotes = document.getElementById('modal-notes');
   let modalBtns = document.getElementById('modal-btns');
+  let modalText = document.getElementById('modal-text');
+  let modalBody = document.getElementById('modal-body');
 
+  modalText.style.display = "block";
   modalTitle.textContent = data.title;
   modalBtns.innerHTML = `<a class="waves-effect waves-light btn btn-save purple lighten-1" id="btn-save" data-_id=${data.id}><i class="fas fa-save"></i> Leave a Note</a>`
 
+  fetch(`/api/notes/${data.id}`, {
+    method: "GET",
+  }).then((res) => {
+    if (res.ok) {
+      modalBody.textContent = "";
+      return res.json();
+    } else {
+      throw new Error("Something went wrong");
+    }
+  })
+    .then((response) => {
+
+      response.forEach((ele) => {
+        // console.log(ele.body);
+        let newDiv = document.createElement('div');
+
+
+        newDiv.classList.add('card');
+
+        newDiv.innerHTML = `
+<div class='card-content'>
+<p>${ele.body}</p>
+</div>
+<div class='card-action'>
+<a class="waves-effect waves-light btn btn-del-note purple lighten-1" data-_id=${ele._id}><i class="fas fa-backspace"></i> Delete Note</a>
+</div>`
+
+        modalBody.appendChild(newDiv);
+      });
+      document.querySelectorAll(".btn-del-note").forEach(elem => {
+        elem.addEventListener('click', delNote);
+      });
+    })
+    .catch(err => err);
 
   //On the close button, add an event listener to display none
   document.getElementById('close').addEventListener('click', () => {
@@ -147,7 +187,6 @@ function handleNoteModal(data) {
       body: modalText.value
     }
 
-    console.log("Saved.js: " + JSON.stringify(postData));
     modalText.value = "";
 
     if (postData.body === "") {
@@ -163,7 +202,15 @@ function handleNoteModal(data) {
       body: JSON.stringify(postData)
     })
       .then((res) => {
-        console.log("/api/notes returned: " + JSON.stringify(res));
+        if (res.ok) {
+          // modalBody.textContent = "";
+          return res.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then(response => {
+        modalBody.innerHTML = "<h4>Your note was saved!</h4>";
       })
       .catch(err => err);
   })
@@ -172,12 +219,27 @@ function handleNoteModal(data) {
   modal.style.display = "block";
 }
 
+function delNote() {
+
+  //get the id from the button element
+  let articleID = this.getAttribute('data-_id');
+  let removeCard = this.parentNode.parentNode;
+
+  removeCard.remove();
+
+  //Delete this fam
+  fetch(`/api/notes/${articleID}`, {
+    method: "DELETE",
+  }).then((res) => {
+    console.log(res);
+    if (res) {
+      getNotes();
+    }
+  })
+}
+
 function deleteArticle() {
 
-  /***************************************
-   * For comments about this area,
-   * See the above saveArticle function, they're the same
-   **************************************/
 
   //get the id from the button element
   let articleID = this.getAttribute('data-_id');

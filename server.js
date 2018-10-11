@@ -1,26 +1,26 @@
-  /* eslint-disable */
+/* eslint-disable */
 //npm packages
 var express = require('express'),
-    logger = require('morgan'),
-    mongoose = require('mongoose'),
-    exhbs = require('express-handlebars');
-    // bodyParser = require('body-parser');
-    
+  logger = require('morgan'),
+  mongoose = require('mongoose'),
+  exhbs = require('express-handlebars');
+// bodyParser = require('body-parser');
+
 //Constants
 const app = express(),
-      PORT = process.env.PORT || 8080,
-      db = require('./models');
+  PORT = process.env.PORT || 8080,
+  db = require('./models');
 
 //express set-up
 app.use(logger('dev'));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
 
 
 //express handlebars
-app.engine("handlebars", exhbs({ defaultLayout: "main"}));
+app.engine("handlebars", exhbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 //Routes
@@ -31,7 +31,7 @@ require("./routes/htmlRoutes")(app);
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/rtArticles";
 // 
 // mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 app.listen(PORT, () => {

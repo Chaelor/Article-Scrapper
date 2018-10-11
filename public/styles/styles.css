@@ -13,6 +13,12 @@ a{
   background-position: top;
 }
 
+.u-center{
+  margin: 20px auto;
+  /* position: relative; */
+  width: 183px;
+}
+
  /* The Modal (background) */
  .modal {
   display: none; /* Hidden by default */
@@ -58,11 +64,19 @@ a{
 .card-link{
   padding-top: 10px;
 }
-.card-content{
-  padding-bottom: 0 !important;
+.card-action{
+  padding-top: 0 !important;
 }
 
 #note-creator{
   background-color: white;
   resize: none;
+}
+
+.btn-del-note{
+  margin-top: 16px;
+}
+
+.saved-content{
+  text-align: center;
 }

@@ -5,6 +5,9 @@
   <div class="modal-content">
     <span id="close">&times;</span>
     <h2 id="modal-title"></h2>
+    <div id="modal-body">
+      No notes here!
+    </div>
     <ul id="modal-notes"></ul>
     <textarea id="modal-text" class="materialize-textarea" placeholder="Your note here!"></textarea>
     <div id="modal-btns"></div>
@@ -15,9 +18,7 @@
   <div class="nav-wrapper blue">
     <a href="/" class="brand-logo center">Reuters Scrapper</a>
     <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li><a href="/" class="waves-effect waves-light btn purple lighten-1" id="article-fetch"><i class="fas fa-arrow-alt-circle-right material-icons left"></i>Scrape
-          Reuters</a></li>
-      <li><a href="/saved">Saved Articles</a></li>
+      <li><a href="/">Get Articles</a></li>
     </ul>
   </div>
 </nav>
@@ -25,6 +26,9 @@
 <div class="jumbotron"></div>
 
 <div class="container">
+  <div class="saved-content">
+    <h2>Saved Articles!</h2>
+  </div>
   <div class="article-data" id="article-data">
     <h1>There are no articles here! Go <a href="/"> here </a> to get some!</h1>
   </div>

@@ -45,7 +45,10 @@ module.exports = (app) => {
   });
 
   app.get("/api/notes/:id", (req, res) => {
-    db.Note.find({ articleID: req.params.id }).then(dbNote => res.json(dbNote));
+    console.log(req.params.id)
+    db.Note.find({ articleID: req.params.id })
+    .then(dbNote => res.json(dbNote))
+    .catch(err => err);
   });
 
   app.get("/api/notes/", (req, res) => {
